@@ -13,18 +13,13 @@ from ...core.security import get_password_hash
 router = APIRouter(prefix="/users", tags=["users"])
 
 
-async def get_user_by_email(
-    db: AsyncIOMotorDatabase, email: str
+async def get_user_by_identifier(
+    db: AsyncIOMotorDatabase, identifier: str
 ) -> Optional[Dict[str, Any]]:
-    """Get a user by email."""
-    return await db.users.find_one({"email": email})
-
-
-async def get_user_by_username(
-    db: AsyncIOMotorDatabase, username: str
-) -> Optional[Dict[str, Any]]:
-    """Get a user by username."""
-    return await db.users.find_one({"username": username})
+    """Get a user by email or username."""
+    return await db.users.find_one(
+        {"$or": [{"email": identifier}, {"username": identifier}]}
+    )
 
 
 @router.post("/signup", response_model=UserResponse, status_code=201)
@@ -44,12 +39,16 @@ async def signup(
     Raises:
         HTTPException: If email or username already exists
     """
-    # Check if email exists
-    if await get_user_by_email(db, user.email):
-        raise HTTPException(status_code=400, detail="Email already registered")
+    # Check if user exists with either email or username in a single query
+    existing_user = await db.users.find_one(
+        {"$or": [{"email": user.email}, {"username": user.username}]}
+    )
 
-    # Check if username exists
-    if await get_user_by_username(db, user.username):
+    if existing_user:
+        if existing_user["email"] == user.email:
+            raise HTTPException(
+                status_code=400, detail="Email already registered"
+            )
         raise HTTPException(status_code=400, detail="Username already taken")
 
     # Create user document
