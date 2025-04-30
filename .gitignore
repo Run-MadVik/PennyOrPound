@@ -1,0 +1,111 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.env
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+
+# FastAPI
+.pytest_cache/
+__pycache__/
+*.pyc
+.coverage
+htmlcov/
+
+# IDE and Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Testing and Coverage
+coverage/
+.coverage
+.coverage.*
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Documentation
+docs/_build/
+site/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# MongoDB
+*.mongodb
+mongodb.log
+mongod.log
+mongodb.pid
+dump/
+data/
+mongodb/
+.mongodb/
+mongo_data/
+
+#Local Linters, Formatters and Quality Tools
+*.pre-commit-config.yaml
+*.flake8
+*.pylintrc
+*.mypy.ini
+configure_hooks.py
+prepare-commit-msg
+commit-msg
+pyproject.toml
