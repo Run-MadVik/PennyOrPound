@@ -99,13 +99,3 @@ data/
 mongodb/
 .mongodb/
 mongo_data/
-
-#Local Linters, Formatters and Quality Tools
-*.pre-commit-config.yaml
-*.flake8
-*.pylintrc
-*.mypy.ini
-configure_hooks.py
-prepare-commit-msg
-commit-msg
-pyproject.toml

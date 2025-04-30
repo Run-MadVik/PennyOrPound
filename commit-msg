@@ -1,0 +1,37 @@
+#!/bin/sh
+
+commit_message=`cat "$1"`
+
+prefixes=("feature" "fix" "refactor" "lint" "hotfix" "doc" "Merge")
+max_length=75
+
+if [[ $commit_message =~ ^Merge ]]; then
+    # If commit message starts with "Merge", bypass the max_length check
+    : 
+else
+    if [ ${#commit_message} -gt $max_length ]; then
+        echo "ERROR: Commit message must not exceed $max_length characters."
+        exit 1
+    fi
+fi
+
+if [ "${commit_message: -1}" == "." ]; then
+    echo "ERROR: Commit message must not end with a period."
+    exit 1
+fi
+
+
+valid_prefix=false
+for prefix in "${prefixes[@]}"; do
+    if [[ $commit_message =~ ^$prefix ]]; then
+        valid_prefix=true
+        break
+    fi
+done
+
+if [[ $valid_prefix == false ]]; then
+    echo "ERROR: Commit message must start with 'feature' 'fix' 'refactor' 'lint' 'hotfix' 'doc' or 'Merge'."
+    exit 1
+fi
+
+exit 0

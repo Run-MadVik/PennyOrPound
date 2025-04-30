@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Check if the commit is a merge commit by looking for the word "Merge"
+if grep -q "^Merge" "$1"; then
+    exit 0
+fi
+
+branch_name=$(git symbolic-ref --short HEAD)
+
+# Check if the branch name starts with "TECH"
+if [[ "$branch_name" != TECH* ]]; then
+    exit 0
+fi
+
+prefix=$(echo $branch_name | cut -d'-' -f1,2)
+
+echo "$prefix: $(cat $1)" > $1

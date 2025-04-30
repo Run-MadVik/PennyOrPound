@@ -1,0 +1,46 @@
+# .pre-commit-config.yaml
+default_language_version:
+  python: python3.9
+exclude: "^env/.+"
+
+
+repos:
+  - repo: local
+    hooks:
+      - id: black
+        name: black
+        entry: black
+        language: system
+        files: \.py$
+
+      - id: isort
+        name: isort
+        entry: isort
+        language: system
+        files: \.py$
+
+      - id: pycln
+        name: pycln
+        entry: pycln
+        language: system
+        files: \.py$
+        args: [
+          "--config=pyproject.toml"
+          ]
+
+      - id: pylint
+        name: pylint
+        entry: pylint
+        language: system
+        types: [python]
+        args: [
+            "--rcfile=.pylintrc",
+            "--output-format=colorized",
+            "--ignore-patterns=__init__.py"
+        ]
+
+      - id: mypy
+        name: mypy
+        entry: mypy
+        language: system
+        files: \.py$
