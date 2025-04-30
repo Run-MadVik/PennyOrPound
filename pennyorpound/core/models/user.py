@@ -150,3 +150,10 @@ class UserResponse(UserBase):
             }
         }
     )
+
+
+class UserLogin(BaseModel):
+    """User login model."""
+
+    username: str = Field(..., description="Username or email to login with")
+    password: str = Field(..., description="User's password")

@@ -7,8 +7,12 @@ from motor.motor_asyncio import AsyncIOMotorDatabase
 from pymongo.errors import DuplicateKeyError
 
 from ...config.database import get_db
-from ...core.models.user import UserCreate, UserResponse
-from ...core.security import get_password_hash
+from ...core.models.user import UserCreate, UserLogin, UserResponse
+from ...core.security import (
+    create_access_token,
+    get_password_hash,
+    verify_password,
+)
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -69,3 +73,36 @@ async def signup(
             status_code=400,
             detail="User with this email or username already exists",
         )
+
+
+@router.post("/login")
+async def login(
+    user_credentials: UserLogin, db: AsyncIOMotorDatabase = Depends(get_db)
+) -> Dict[str, str]:
+    """
+    Authenticate a user and return a JWT token.
+
+    Args:
+        user_credentials: The login credentials
+        db: MongoDB database instance
+
+    Returns:
+        Dict containing the access token and token type
+
+    Raises:
+        HTTPException: If credentials are invalid
+    """
+    # Get user by username or email
+    user = await get_user_by_identifier(db, user_credentials.username)
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+    # Verify password
+    if not verify_password(user_credentials.password, user["hashed_password"]):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+    # Create access token
+    token_data = {"sub": str(user["_id"]), "username": user["username"]}
+    access_token = create_access_token(token_data)
+
+    return {"access_token": access_token, "token_type": "bearer"}

@@ -1,4 +1,4 @@
-"""Test cases for user-related endpoints."""
+"""Test cases for user signup."""
 
 from typing import Dict
 
